@@ -5,8 +5,10 @@ host=$DEV_ONLINE_HOST
 ssh_port=$DEV_ONLINE_SSH_PORT
 user=$DEV_ONLINE_USER
 data_path=$DEV_ONLINE_DATA_PATH
-id=$GITHUB_OAUTH_ID
-secrety=$GITHUB_OAUTH_SECRET
+# id=$GITHUB_OAUTH_ID
+# secrety=$GITHUB_OAUTH_SECRET
+id="1b675fcf0bef67c26927"
+secrety="e93c3432736cb8e4d4057605b07d69e7bc772887"
 node_env=$DEV_ONLINE_NODE_ENV
 origin=$DEV_ONLINE_ORIGIN
 port=$DEV_ONLINE_SERVER_PORT
@@ -38,8 +40,6 @@ ssh -p $ssh_port $user@$host \
   export PORT=$port 
   export NODE_ENV=$node_env 
   nohup node index.js >> local_log 2>&1 & 
-  pwd
-  ls
   "
 
 # Check exit status of previous command
