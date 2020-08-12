@@ -25,10 +25,9 @@ parse_config() {
             --node_env=*)
             NODEENV="${arg#*=}"
             ;;
+            *)
             echo "unknow arg"
             ;;
-            *)
-
         esac
     done
 }
