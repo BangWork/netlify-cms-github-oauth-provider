@@ -25,11 +25,10 @@ fi
 
 echo 'Deploying...'
 ssh -p $ssh_port $user@$host \
-  " set -e  
-
+  "  
     echo \"kp :$(lsof -t -i :3000)\" 
-    kill -9 \"$(lsof -t -i :3000)\"
-    cd $data_path
+    kill -9 \"$(lsof -t -i :3000)\" 
+    cd $data_path 
     rm -rf master 
     mkdir master  
     tar -xvf $pkg -C master 
