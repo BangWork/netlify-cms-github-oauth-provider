@@ -1,0 +1,82 @@
+pipeline {
+  agent {
+    docker {
+      image 'ones-web-env'
+    }
+  }
+
+  options {
+    timeout(time: 20, unit: 'MINUTES')
+    disableConcurrentBuilds()
+  }
+
+  environment {
+    DEV_ONLINE_HOST = '119.23.130.213'
+    DEV_ONLINE_SSH_PORT = 8022
+    DEV_ONLINE_USER = "ones-api"
+    DEV_ONLINE_DATA_PATH = "/data/app/web/product-manual-oauth"
+    DEV_ONLINE_NODE_ENV = "production"
+    DEV_ONLINE_ORIGIN = "dev.myones.net"
+    DEV_ONLINE_SERVER_PORT = 3000
+  }
+
+  stages {
+    stage('Get SSH_KEY') {
+      options {
+        retry(3)
+      }
+      steps {
+        withCredentials([
+          sshUserPrivateKey(credentialsId: 'dev.ones.team', keyFileVariable: 'SSH_PRIVATE_KEY')
+        ]) {
+          sh '''
+            set +x
+            cat $SSH_PRIVATE_KEY > ~/.ssh/id_rsa && chmod 400 ~/.ssh/id_rsa
+          '''
+        }
+      }
+    }
+
+
+    stage('Npm istall') {
+      steps {
+        script {
+          sh "npm install"
+        }
+      }
+    }
+
+    stage('Package All Web Assets') {
+      steps {
+        script {
+          sh "tar -cvf netlify-cms-github-oauth-provider-$BRANCH_NAME-assets.tar.gz *"
+        }
+      }
+    }
+
+    stage('Deploy To Dev Server') {
+      options {
+        retry(3)
+      }
+      steps{
+        withCredentials(
+            bindings: [usernamePassword(credentialsId: 'netlify_cms_oauth_secret', \
+                      usernameVariable: 'GITHUB_OAUTH_ID', \
+                      passwordVariable: 'GITHUB_OAUTH_SECRET')
+          ]) {
+            sh '''
+              bash ./devops/scripts/deploy.sh development_online
+            '''
+          }
+      }
+    }
+  }
+  post {
+    always {
+      echo 'Pipeline finished, Pushing notification now....'
+    }
+    success {
+      sh './devops/scripts/cleanup.sh'
+    }
+  }
+}
