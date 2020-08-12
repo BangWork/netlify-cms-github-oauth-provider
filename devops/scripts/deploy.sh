@@ -26,9 +26,9 @@ fi
 echo 'Deploying...'
 ssh -p $ssh_port $user@$host \
   " set -e  
-    kp=`fuser -k 3000/tcp` 
-    echo 'kp:$kp' 
-    kill -9 $kp 
+
+    echo \"kp :$(lsof -t -i :3000)\" 
+    kill -9 \"$(lsof -t -i :3000)\"
     cd $data_path
     rm -rf master 
     mkdir master  
