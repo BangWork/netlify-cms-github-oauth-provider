@@ -25,7 +25,7 @@ if [ $? != 0 ]; then
 fi
 
 echo 'Deploying...'
-ssh -p $ssh_port $user@$host /bin/bash $data_path/remote.sh --data_path=$DEV_ONLINE_DATA_PATH --id=$GITHUB_OAUTH_ID --secrety=$GITHUB_OAUTH_SECRET --node_env=$DEV_ONLINE_NODE_ENV --origin=$DEV_ONLINE_ORIGIN --port=$DEV_ONLINE_SERVER_PORT
+ssh -p $ssh_port $user@$host /bin/bash $data_path/remote.sh --data_path=$DEV_ONLINE_DATA_PATH --id=$GITHUB_OAUTH_ID --secrety=$GITHUB_OAUTH_SECRET --node_env=$DEV_ONLINE_NODE_ENV --origin=$DEV_ONLINE_ORIGIN --port=$DEV_ONLINE_SERVER_PORT --pkg=$pkg
 
 # Check exit status of previous command
 if [ $? != 0 ]; then
