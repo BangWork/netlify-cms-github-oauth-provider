@@ -24,23 +24,24 @@ if [ $? != 0 ]; then
 fi
 
 echo 'Deploying...'
-ssh -p $ssh_port $user@$host \
-  "  
-    echo \"kp :$(lsof -t -i :3000)\" 
-    kill -9 \"$(lsof -t -i :3000)\" 
-    cd $data_path 
-    rm -rf master 
-    mkdir master  
-    tar -xvf $pkg -C master 
-    rm -rf $pkg 
-    cd master 
-    export OAUTH_CLIENT_ID=$id 
-    export OAUTH_CLIENT_SECRET=$secrety 
-    export ORIGIN=$origin 
-    export PORT=$port 
-    export NODE_ENV=$node_env 
-    nohup node index.js >> local_log 2>&1 & 
-    "
+ssh -p $ssh_port $user@$host <<'ENDSSH'
+#commands to run on remote host
+set -e
+echo "kp :$(lsof -t -i :3000)" 
+kill -9 "$(lsof -t -i :3000)" 
+cd $data_path 
+rm -rf master 
+mkdir master  
+tar -xvf $pkg -C master 
+rm -rf $pkg 
+cd master 
+export OAUTH_CLIENT_ID=$id 
+export OAUTH_CLIENT_SECRET=$secrety 
+export ORIGIN=$origin 
+export PORT=$port 
+export NODE_ENV=$node_env 
+nohup node index.js >> local_log 2>&1 & 
+ENDSSH
 
 # Check exit status of previous command
 if [ $? != 0 ]; then
