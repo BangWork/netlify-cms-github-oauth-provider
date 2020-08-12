@@ -26,6 +26,7 @@ fi
 echo 'Deploying...'
 ssh -p $ssh_port $user@$host \
   "
+  set -e
   kp=`ps -ef | grep 'node index.js' | grep -v grep | awk '{print $2}'`
   echo 'kp:$kp'
   kill -9 $kp
