@@ -19,16 +19,16 @@ parse_config() {
             --origin=*)
             ORIGIN="${arg#*=}"
             ;;
-            *)
             --port=*)
             PORT="${arg#*=}"
             ;;
             --node_env=*)
             NODEENV="${arg#*=}"
             ;;
-            # unknown option
-            usage
+            echo "unknow arg"
             ;;
+            *)
+
         esac
     done
 }
