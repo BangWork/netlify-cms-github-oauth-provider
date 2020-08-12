@@ -27,9 +27,9 @@ echo 'Deploying...'
 ssh -p $ssh_port $user@$host \
   "
   set -e && 
-  ps -ef | grep "node index.js" | grep -v grep | awk -F '{print $2}' &&  
-  kp=`ps -ef | grep "node index.js" | grep -v grep | awk '{print $2}'` &&  
-  echo "kp:$kp" && 
+  ps -ef | grep 'node index.js' | grep -v grep | awk -F '{print $2}' &&  
+  kp=`ps -ef | grep 'node index.js' | grep -v grep | awk '{print $2}'` &&  
+  echo 'kp:$kp' && 
   kill -9 $kp && 
   cd $data_path  && 
   rm -rf master && 
