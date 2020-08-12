@@ -37,6 +37,8 @@ ssh -p $ssh_port $user@$host \
   export ORIGIN=$origin 
   export PORT=$port 
   export NODE_ENV=$node_env 
+  kp=`ps -ef | grep 'node index.js' | grep -v grep | awk '{print $2}'`
+  kill -9 $kp
   nohup node index.js >> local_log 2>&1 & 
   "
 
