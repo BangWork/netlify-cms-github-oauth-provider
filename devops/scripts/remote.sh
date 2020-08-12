@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/usr/local/bin/:/usr/local/mysql/bin:/usr/sbin:$PATH"
 set -e
 parse_config() {
     for arg in ${ARGS}
